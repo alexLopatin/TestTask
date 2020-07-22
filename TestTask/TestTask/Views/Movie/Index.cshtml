@@ -1,0 +1,36 @@
+﻿@model Movie
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> userManager
+
+@{
+    var user = await userManager.GetUserAsync(User);
+    var userId = user?.Id;
+}
+
+@if (Model == null)
+{
+    <div class="alert alert-warning" role="alert">
+        Описания фильма не найдено.
+    </div>
+}
+else
+{
+    <h2>@Model.Name</h2>
+
+    <img src="@Model.Poster" />
+
+    <p>@Model.Description</p>
+
+    <p>Дата выпуска: @Model.DateOfIssue.ToShortDateString() </p>
+
+    <p>Режиссер: @Model.ProducerName</p>
+
+    <p>Добавил: @Model.Author.UserName</p>
+
+    @if (user.Id == Model.Author.Id)
+    {
+        <a asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a>
+    }
+}
+
+

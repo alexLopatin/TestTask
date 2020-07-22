@@ -1,0 +1,48 @@
+﻿@model Movie
+
+@if (ViewBag.message != null)
+{
+    <div class="alert alert-success">@ViewBag.message</div>
+}
+else if (Model == null)
+{
+    <div class="alert alert-warning" role="alert">
+        Описаниe фильма не найдено.
+    </div>
+}
+else
+{
+    <form method="post" asp-controller="Movie" asp-action="Edit" class="edit-form"  enctype="multipart/form-data">
+
+        @Html.HiddenFor(x => x.Id)
+        <div asp-validation-summary="ModelOnly" style="text-align:center; max-width:400px;"></div>
+        <div>
+            <label asp-for="Name"></label><br />
+            <input asp-for="Name" /><br />
+            <span asp-validation-for="Name"></span>
+        </div>
+        <div>
+            <label asp-for="Description"></label><br />
+            <input asp-for="Description" /><br />
+            <span asp-validation-for="Description"></span>
+        </div>
+        <div>
+            <label asp-for="DateOfIssue"></label><br />
+            @Html.TextBoxFor(model => model.DateOfIssue, "{0:dd/MM/yyyy}")<br />
+            <span asp-validation-for="DateOfIssue"></span>
+        </div>
+        <div>
+            <label asp-for="ProducerName"></label><br />
+            <input asp-for="ProducerName" /><br />
+            <span asp-validation-for="ProducerName"></span>
+        </div>
+        <div>
+            <label asp-for="formFile"></label><br />
+            <input asp-for="formFile" /><br />
+            <span asp-validation-for="formFile"></span>
+        </div>
+        <div id="edit-button">
+            <input type="submit" value="Изменить" class="btn btn-primary" />
+        </div>
+    </form>
+}

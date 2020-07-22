@@ -1,0 +1,93 @@
+﻿@model PageList<Movie>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> userManager
+
+@{
+    var user = await userManager.GetUserAsync(User);
+    var userId = user?.Id;
+}
+
+<h2>Список фильмов</h2>
+
+@if (User.Identity.IsAuthenticated)
+{
+<a class="btn btn-primary" href="/Movie/Create" style="margin:10px;">
+    Добавить описание
+</a>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Название</th>
+            <th scope="col">Режиссер</th>
+            <th scope="col">Год выпуска</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var movie in Model)
+        {
+
+            <tr>
+                <th scope="row"><a asp-controller="Movie" asp-action="Index" asp-route-id="@movie.Id">@movie.Name</a></th>
+                <th scope="row">@movie.ProducerName</th>
+                <th scope="row">@movie.DateOfIssue.ToShortDateString()</th>
+                @if (userId == movie.Author.Id)
+                {
+                    <th scope="row"><a asp-controller="Movie" asp-action="Edit" asp-route-id="@movie.Id">Изменить</a></th>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="page-links">
+    <div style="margin:50px; font-size: 18px;">
+        @if (Model.CountOfPages <= 10)
+        {
+            <a style="margin:10px;">Страницы:</a>
+            @for (int i = 1; i <= Model.CountOfPages; i++)
+            {
+
+                @if (i != Model.PageIndex)
+                {
+                    <a style="margin:10px;" asp-controller="Movies" asp-action="Index" asp-route-page="@i">@i</a>
+                }
+                else
+                {
+                    <a style="margin:10px;">@i</a>
+                }
+            }
+        }
+        else
+        {
+            <a style="margin:10px;">Страницы:</a>
+            @if (Model.PageIndex > 2)
+            {
+                <a style="margin:10px;">...</a>
+            }
+            @for (int i = (Model.PageIndex > 1 ? Model.PageIndex - 1 : Model.PageIndex); i <= Math.Min(Model.PageIndex + 5, Model.CountOfPages); i++)
+            {
+
+                @if (i != Model.PageIndex)
+                {
+                    <a style="margin:10px;" asp-controller="Movies" asp-action="Index" asp-route-page="@i">@i</a>
+                }
+                else
+                {
+                    <a style="margin:10px;">@i</a>
+                }
+            }
+            @if (Model.PageIndex + 5 < Model.CountOfPages - 1)
+            {
+                <a style="margin:10px;">...</a>
+            }
+            @if (Model.PageIndex + 5 < Model.CountOfPages)
+            {
+                <a style="margin:10px;" asp-controller="Movies" asp-action="Index" asp-route-page="@Model.CountOfPages">@Model.CountOfPages</a>
+            }
+        }
+
+    </div>
+</div>

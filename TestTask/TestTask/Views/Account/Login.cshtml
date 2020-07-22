@@ -1,0 +1,24 @@
+﻿@model TestTask.Models.ViewModel.LoginViewModel
+<h2>Вход</h2>
+<form method="post" asp-controller="Account" asp-action="Login" class="register-form" asp-route-returnUrl="@Model.ReturnUrl">
+    <p>Нет аккаунта? <a asp-controller="Account" asp-action="Register">Зарегистрироваться</a></p>
+    <div asp-validation-summary="ModelOnly" style="text-align:center;"></div>
+    <div>
+        <label asp-for="Email"></label><br />
+        <input asp-for="Email" /><br />
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div>
+        <label asp-for="Password"></label><br />
+        <input asp-for="Password" /><br />
+        <span asp-validation-for="Password"></span>
+    </div>
+    <div>
+
+        <input asp-for="RememberMe" />
+        <label asp-for="RememberMe"></label>
+    </div>
+    <div id="register-button">
+        <input type="submit" value="Войти" class="btn btn-primary" />
+    </div>
+</form>
